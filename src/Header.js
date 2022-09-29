@@ -5,7 +5,7 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import ChatIcon from "@mui/icons-material/Chat";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import HeaderOption from "./HeaderOption";
+import HeaderOption from "./components/HeaderOption";
 
 import "./Header.css";
 
