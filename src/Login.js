@@ -49,7 +49,7 @@ function Login() {
             return alert("An error occurred. Try again.");
           });
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => alert(error));
     e.preventDefault();
   };
 
