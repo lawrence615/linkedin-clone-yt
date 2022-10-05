@@ -11,7 +11,7 @@ import Widgets from "./Widgets";
 import "./App.css";
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const user = useSelector(selectUser);
 
   useEffect(() => {
