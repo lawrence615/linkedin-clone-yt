@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { auth, createUserWithEmailAndPassword, updateProfile } from "./fb";
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "./fb";
 import { login } from "./features/userSlice";
 import "./Login.css";
 
@@ -14,7 +19,18 @@ function Login() {
   const onLogin = (e) => {
     e.preventDefault();
 
-    // auth
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        dispatch(
+          login({
+            email: userCredential.user.email,
+            uid: userCredential.user.uid,
+            displayName: userCredential.user.displayName,
+            photoUrl: userCredential.user.photoURL,
+          })
+        );
+      })
+      .catch((error) => alert(error));
   };
 
   const onRegister = (e) => {
