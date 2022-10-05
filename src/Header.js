@@ -1,15 +1,28 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import ChatIcon from "@mui/icons-material/Chat";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import HeaderOption from "./components/HeaderOption";
 
+import HeaderOption from "./components/HeaderOption";
+import { logout } from "./features/userSlice";
 import "./Header.css";
+import { auth, signOut } from "./fb";
 
 function Header() {
+  const dispatch = useDispatch();
+
+  const onLogout = () => {
+    signOut(auth)
+      .then(() => {
+        dispatch(logout());
+      })
+      .catch((error) => alert(error));
+  };
+
   return (
     <div className="header">
       <div className="header__left">
@@ -32,6 +45,7 @@ function Header() {
         <HeaderOption
           avatar="https:://compassionate-leakey-e9b16b.netlify.app/images/IG_Sonny.jpeg"
           title="Me"
+          onClick={onLogout}
         />
       </div>
     </div>
