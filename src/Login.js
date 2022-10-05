@@ -1,11 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { auth, createUserWithEmailAndPassword, updateProfile } from "./fb";
+import { login } from "./features/userSlice";
 import "./Login.css";
 
 function Login() {
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [profilePic, setProfilePic] = useState("");
 
-  const onLogin = () => {};
+  const onLogin = (e) => {
+    e.preventDefault();
 
-  const onRegister = () => {};
+    // auth
+  };
+
+  const onRegister = (e) => {
+    if (!name) {
+      return alert("Please enter a full name.");
+    }
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        // const user = userCredential.user;
+        // user.displayName = name
+        // user.photoURL = profilePic
+
+        updateProfile(userCredential.user, {
+          displayName: name,
+          photoURL: profilePic,
+        })
+          .then(() => {
+            // Profile updated!
+            dispatch(
+              login({
+                email: userCredential.user.email,
+                uid: userCredential.user.uid,
+                displayName: name,
+                photoUrl: profilePic,
+              })
+            );
+            // return alert("Profile updates successfully.");
+          })
+          .catch((error) => {
+            // An error occurred
+            return alert("An error occurred. Try again.");
+          });
+      })
+      .catch((error) => alert(error.message));
+    e.preventDefault();
+  };
 
   return (
     <div className="login">
@@ -14,15 +60,37 @@ function Login() {
         alt=""
       />
       <form>
-        <input placeholder="Full name (required if registering)" type="text" />
-        <input placeholder="Profile pic URL (optional)" type="text" />
-        <input placeholder="Email" type="email" />
-        <input placeholder="Password" type="password" />
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Full name (required if registering)"
+          type="text"
+        />
+        <input
+          value={profilePic}
+          onChange={(e) => setProfilePic(e.target.value)}
+          placeholder="Profile pic URL (optional)"
+          type="text"
+        />
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          type="email"
+        />
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          type="password"
+        />
 
-        <button type="submit" onClick={onLogin}>Sign In</button>
+        <button type="submit" onClick={onLogin}>
+          Sign In
+        </button>
       </form>
       <p>
-        Not a member? {" "}
+        Not a member?{" "}
         <span className="login__register" onClick={onRegister}>
           Register Now
         </span>
