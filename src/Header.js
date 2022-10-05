@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
@@ -8,7 +8,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
 import HeaderOption from "./components/HeaderOption";
-import { logout } from "./features/userSlice";
+import { logout, selectUser } from "./features/userSlice";
 import "./Header.css";
 import { auth, signOut } from "./fb";
 
@@ -43,7 +43,7 @@ function Header() {
         <HeaderOption Icon={ChatIcon} title="Messaging" />
         <HeaderOption Icon={NotificationsIcon} title="Notifications" />
         <HeaderOption
-          avatar="https:://compassionate-leakey-e9b16b.netlify.app/images/IG_Sonny.jpeg"
+        avatar={true}
           title="Me"
           onClick={onLogout}
         />
