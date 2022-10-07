@@ -26,6 +26,10 @@
     overflow-wrap: anywhere;
 }
 
+.post__body > p {
+    margin-top: 10px;
+}
+
 .post__buttons {
     display: flex;
     justify-content: space-evenly;
