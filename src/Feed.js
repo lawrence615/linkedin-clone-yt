@@ -1,18 +1,31 @@
 /* eslint-disable array-callback-return */
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import CreateIcon from "@mui/icons-material/Create";
 import ImageIcon from "@mui/icons-material/Image";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import CalendarIcon from "@mui/icons-material/CalendarViewDay";
 import { serverTimestamp } from "firebase/firestore";
+import FlipMove from "react-flip-move";
 
 import InputOption from "./components/InputOption";
 import Post from "./components/Post";
-import { db, collection, addDoc, getDocs, query, orderBy, onSnapshot } from "./fb";
+import {
+  db,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  onSnapshot,
+} from "./fb";
+import { selectUser } from "./features/userSlice";
 import "./Feed.css";
 
 function Feed() {
+  const user = useSelector(selectUser);
+
   const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
 
@@ -25,7 +38,7 @@ function Feed() {
   // }, []); // Or [] if effect doesn't need props or state
 
   useEffect(() => {
-    const q = query(collection(db, "posts"), orderBy('timestamp', 'desc'));
+    const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
     onSnapshot(q, (querySnapshot) => {
       // const data = [];
       // querySnapshot.forEach((doc) => {
@@ -49,13 +62,13 @@ function Feed() {
 
     try {
       const docRef = addDoc(collection(db, "posts"), {
-        name: "Peter Boxxe",
-        description: "This is a test",
+        name: user.displayName,
+        description: user.email,
         message: input,
-        photoUrl: "",
+        photoUrl: user.photoUrl || "",
         timestamp: serverTimestamp(),
       });
-      setInput('')
+      setInput("");
       // console.log("Document written with ID: ", docRef.id);
     } catch (e) {
       // console.error("Error adding document: ", e);
@@ -89,24 +102,17 @@ function Feed() {
           />
         </div>
       </div>
-      {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
-        <Post
-          id={id}
-          name={name}
-          description={description}
-          message={message}
-          photoUrl={photoUrl}
-        />
-      ))}
-      {/* {posts.map(({ id, data: { name, description, message, photoUrl } }) => {
-        <Post
-          id={id}
-          name={name}
-          description={description}
-          message={message}
-          photoUrl={photoUrl}
-        />;
-      })} */}
+      <FlipMove>
+        {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
+          <Post
+            key={id}
+            name={name}
+            description={description}
+            message={message}
+            photoUrl={photoUrl}
+          />
+        ))}
+      </FlipMove>
     </div>
   );
 }
