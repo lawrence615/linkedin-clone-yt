@@ -35,4 +35,8 @@ yarn-error.log*
 # Built Visual Studio Code Extensions
 *.vsix
 
+**/.firebase
+**/.firebaserc
+**/firebase-debug.log
+
 .env
